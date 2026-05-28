@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Xsl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AnimationRagdoll : MonoBehaviour
 {
@@ -9,13 +9,12 @@ public class AnimationRagdoll : MonoBehaviour
     [SerializeField] private float respawnTime = 5f;
     Rigidbody[] rigidbodies;
     private bool isRagdoll = false;
-    [SerializeField] Rigidbody encounter;
+
 
     void Start()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
-        ToggleRagdoll(false);
-        transform.forward = encounter.position * 30;
+        ToggleRagdoll(true);
     }
 
     private void ToggleRagdoll(bool isAnimation)
@@ -31,7 +30,7 @@ public class AnimationRagdoll : MonoBehaviour
 
             if (isAnimation) RandomAnimation();
         }
-    } 
+    }
 
     private void RandomAnimation()
     {
@@ -58,10 +57,11 @@ public class AnimationRagdoll : MonoBehaviour
     private IEnumerator GetBackup()
     {
         yield return new WaitForSeconds(respawnTime);
+        ToggleRagdoll(false);
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+        yield return new WaitForFixedUpdate();
         ToggleRagdoll(true);
     }
-    void Update()
-    {
-
-    }
+ 
 }
