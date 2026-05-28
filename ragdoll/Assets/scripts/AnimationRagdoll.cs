@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Xsl;
 using UnityEngine;
 
 public class AnimationRagdoll : MonoBehaviour
@@ -8,13 +9,13 @@ public class AnimationRagdoll : MonoBehaviour
     [SerializeField] private float respawnTime = 5f;
     Rigidbody[] rigidbodies;
     private bool isRagdoll = false;
-   
+    [SerializeField] Rigidbody encounter;
 
     void Start()
     {
         rigidbodies = GetComponentsInChildren<Rigidbody>();
-        ToggleRagdoll(true);
-        transform.position = new Vector3(0, 0, 0) * 5 * Time.deltaTime;
+        ToggleRagdoll(false);
+        transform.forward = encounter.position * 30;
     }
 
     private void ToggleRagdoll(bool isAnimation)
@@ -24,7 +25,7 @@ public class AnimationRagdoll : MonoBehaviour
 
         foreach (Rigidbody ragdollBody in rigidbodies)
         {
-            //ragdollBody.isKinematic = isAnimation;
+            ragdollBody.isKinematic = isAnimation;
 
             GetComponent<Animator>().enabled = isAnimation;
 
